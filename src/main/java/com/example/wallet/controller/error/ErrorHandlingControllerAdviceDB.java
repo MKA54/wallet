@@ -31,7 +31,7 @@ public class ErrorHandlingControllerAdviceDB {
     @ResponseBody
     public ValidationErrorResponse handleOptimisticLockError(OptimisticLockingFailureException ex) {
         List<ValidationError> errors = Collections.singletonList(
-                new ValidationError("lock", "Конфликт версий записи")
+                new ValidationError("lock", "Конфликт версий записи: " + ex.getMostSpecificCause().getMessage())
         );
         return new ValidationErrorResponse(errors);
     }
@@ -51,7 +51,7 @@ public class ErrorHandlingControllerAdviceDB {
     @ResponseBody
     public ValidationErrorResponse handleTransientDatabaseError(TransientDataAccessException ex) {
         List<ValidationError> errors = Collections.singletonList(
-                new ValidationError("database", "Временная ошибка доступа к базе данных")
+                new ValidationError("database", "Временная ошибка доступа к базе данных: " + ex.getMessage())
         );
         return new ValidationErrorResponse(errors);
     }
